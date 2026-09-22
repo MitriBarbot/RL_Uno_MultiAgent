@@ -1,1 +1,4 @@
 pandas
+random
+pytest
+IPython.display 
