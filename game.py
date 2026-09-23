@@ -1,9 +1,17 @@
 import random
 import pandas as pd
 from player import Player
+from agents.random_agent import RandomAgent
+
 
 COLORS = ["Red", "Blue", "Yellow", "Green"]
 
+players = [
+    Player("P1", RandomAgent("Random 1")),
+    Player("P2", RandomAgent("Random 2")),
+    Player("P3", RandomAgent("Random 3")),
+    Player("P4", RandomAgent("Random 4")),
+]
 
 
 class UnoGame:
@@ -18,9 +26,11 @@ class UnoGame:
         self.winner = None
         self.current_color = None
 
+        self.logs = []
+
     def create_deck(self):
         self.deck = []
-        card_df = pd.read_csv("../data/data.csv")
+        card_df = pd.read_csv("data/data.csv")
         for _, row in card_df.iterrows():
             for _ in range(row["count"]):
                 self.deck.append({
@@ -37,7 +47,7 @@ class UnoGame:
 
     def deal_cards(self):
         for player in self.players:
-            for _ in range(3):
+            for _ in range(7):
                 player.hand.append(self.deck.pop())
 
     def draw_card(self):
@@ -67,7 +77,9 @@ class UnoGame:
 
     def next_player(self):
         if self.current_player is None:
-            self.current_player = random.choice(self.players)
+            self.current_player = random.choice(self.players) #random player starts
+            
+            #self.current_player = self.players[0] #player1 starts 
             return
 
         index = self.players.index(self.current_player)
@@ -82,18 +94,24 @@ class UnoGame:
             ]
 
     def play_turn(self, choice=None):
-        if choice is None:
+
+        if choice is None or choice == 0:
             drawn_card = self.draw_card()
+
             if drawn_card in self.legal_cards():
-                self.play_card(self.current_player.hand[-1])
-            else:
-                self.next_player()
-            return
+                # pour l'instant, on garde le joueur
+                # afin qu'il puisse décider s'il joue la carte
+                return "DRAWN_PLAYABLE"
+
+            self.next_player()
+            return "DRAWN"
 
         success = self.play_card(choice)
 
         if success:
-            self.check_winner()
+            if not self.running:
+                return True
+
             self.apply_effect()
             self.next_player()
             return True
@@ -103,7 +121,8 @@ class UnoGame:
 
     def check_winner(self):
         if len(self.current_player.hand) == 0:
-            self.winner = self.current_player
+            self.winner = self.current_player.name
+            self.log(f"{self.winner} won the game !")
             self.running = False
             return True
 
@@ -144,15 +163,16 @@ class UnoGame:
         if choice < 1 or choice > len(self.current_player.hand):
             return False
 
-        card = self.current_player.hand[choice - 1]
+        card = self.current_player.hand[choice -1]
 
         if card not in self.legal_cards():
             return False
 
-        played_card = self.current_player.hand.pop(choice - 1)
+        played_card = self.current_player.hand.pop(choice -1)
 
         self.used.append(played_card)
         self.last_played = played_card
+        self.log(f"{self.current_player.name} , played | {played_card['value']} {played_card['color']}")
         self.current_color = played_card["color"]
 
         self.check_winner()
@@ -173,6 +193,11 @@ class UnoGame:
         self.current_color = first_card["color"]
 
         self.next_player()
+        self.apply_effect()
+        self.log(f"Starting card : {self.last_played['value']} | {self.last_played['color']}")
+        self.log(f"First Player: {self.current_player.name}")
+
+
 
     def ask_card(self):
         while True:
@@ -198,18 +223,43 @@ class UnoGame:
 
     def ask_color(self):
         while True:
-            choice = input(
-                "Choose a color: "
-                "1: Red | 2: Blue | 3: Yellow | 4: Green : "
-            )
+            choice = self.current_player.agent.choose_action(action_type="color")
 
             try:
                 choice = int(choice)
             except ValueError:
-                print("Please enter an integer.")
                 continue
 
             if 1 <= choice <= 4:
                 return choice
 
-            print("Choice out of range.")
+
+    def run(self):
+        self.setup_round()
+
+        while self.running:
+            player = self.current_player
+            agent = player.agent
+
+            observation = self.get_observation()
+            legal_actions = self.get_legal_actions()
+
+            action = agent.choose_action(
+                observation,
+                legal_actions,
+                action_type="card"
+            )
+
+            self.play_turn(action)
+
+        return self.winner
+
+
+    def log(self, message):
+        self.logs.append(message)
+
+    def get_observation(self):
+        return self.current_player.hand
+
+    def get_legal_actions(self):
+        return self.legal_cards()

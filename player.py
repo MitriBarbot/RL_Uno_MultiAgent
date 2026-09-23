@@ -1,7 +1,8 @@
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, agent = None):
         self.name = name
         self.hand = []
+        self.agent = agent
 
     def add_card(self, card):
         self.hand.append(card)
