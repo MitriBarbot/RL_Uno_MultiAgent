@@ -1,17 +1,11 @@
 import random
 import pandas as pd
+from agents.heuristic_agent import HeuristicAgent
 from player import Player
 from agents.random_agent import RandomAgent
 
 
 COLORS = ["Red", "Blue", "Yellow", "Green"]
-
-players = [
-    Player("P1", RandomAgent("Random 1")),
-    Player("P2", RandomAgent("Random 2")),
-    Player("P3", RandomAgent("Random 3")),
-    Player("P4", RandomAgent("Random 4")),
-]
 
 
 class UnoGame:
@@ -24,6 +18,7 @@ class UnoGame:
         self.normal_order = True
         self.running = True
         self.winner = None
+        self.turn_count = 0
         self.current_color = None
 
         self.logs = []
@@ -94,13 +89,12 @@ class UnoGame:
             ]
 
     def play_turn(self, choice=None):
+        self.turn_count += 1
 
         if choice is None or choice == 0:
             drawn_card = self.draw_card()
 
             if drawn_card in self.legal_cards():
-                # pour l'instant, on garde le joueur
-                # afin qu'il puisse décider s'il joue la carte
                 return "DRAWN_PLAYABLE"
 
             self.next_player()
@@ -223,7 +217,7 @@ class UnoGame:
 
     def ask_color(self):
         while True:
-            choice = self.current_player.agent.choose_action(action_type="color")
+            choice = self.current_player.agent.choose_action(observation= self.current_player.hand, legal_actions= COLORS , action_type="color")
 
             try:
                 choice = int(choice)
