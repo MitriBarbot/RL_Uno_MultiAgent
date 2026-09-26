@@ -5,6 +5,10 @@ class HeuristicAgent(Agent):
     def choose_action(self, observation= None, legal_actions = None, action_type="card"):
         if action_type == "color":
             return self.most_freq_color(legal_actions, observation)
+
+        if action_type == "drawn":
+            return 1
+        
         if not legal_actions:
             return 0
         non_black_cards = [

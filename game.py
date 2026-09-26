@@ -61,14 +61,30 @@ class UnoGame:
 
 
     def legal_cards(self):
-        return [
-            card for card in self.current_player.hand
-            if (
-                card["color"] == self.current_color
-                or card["color"] == "Black"
-                or card["value"] == self.last_played["value"]
-            )
-        ]
+        legal = []
+
+        has_current_color = any(
+            card["color"] == self.current_color
+            for card in self.current_player.hand
+        )
+
+        for card in self.current_player.hand:
+
+            if card["effect"] == "Wild":
+                legal.append(card)
+
+            # +4 seulement si aucune carte de la couleur active
+            elif card["effect"] == "Draw Four":
+                if not has_current_color:
+                    legal.append(card)
+
+            elif card["color"] == self.current_color:
+                legal.append(card)
+
+            elif card["value"] == self.last_played["value"]:
+                legal.append(card)
+
+        return legal
 
     def next_player(self):
         if self.current_player is None:
@@ -244,7 +260,28 @@ class UnoGame:
                 action_type="card"
             )
 
-            self.play_turn(action)
+            result = self.play_turn(action)
+
+            if result == "DRAWN_PLAYABLE":
+                drawn_choice = agent.choose_action(
+                    observation=self.get_observation(),
+                    legal_actions=[0, 1],
+                    action_type="drawn"
+                )
+
+                # 0 = pass
+                if drawn_choice == 0:
+                    self.next_player()
+
+                # 1 = play the card just drawn
+                elif drawn_choice == 1:
+                    drawn_card_index = len(self.current_player.hand)
+
+                    success = self.play_card(drawn_card_index)
+
+                    if success and self.running:
+                        self.apply_effect()
+                        self.next_player()
 
         return self.winner
 
