@@ -20,8 +20,12 @@ class UnoGame:
         self.winner = None
         self.turn_count = 0
         self.current_color = None
-
         self.logs = []
+        self.replay_logs = {
+            "setup" : {},
+            "turns" : [],
+            "result" : {}
+        }
 
     def create_deck(self):
         self.deck = []
@@ -134,6 +138,7 @@ class UnoGame:
             self.winner = self.current_player.name
             self.log(f"{self.winner} won the game !")
             self.running = False
+            self.log_result({"Winner" : self.winner, "Turns_count" : self.turn_count})
             return True
 
         return False
@@ -182,7 +187,7 @@ class UnoGame:
 
         self.used.append(played_card)
         self.last_played = played_card
-        self.log(f"{self.current_player.name} , played | {played_card['value']} {played_card['color']}")
+        #self.log(f"{self.current_player.name} , played | {played_card['value']} {played_card['color']}")
         self.current_color = played_card["color"]
 
         self.check_winner()
@@ -201,12 +206,18 @@ class UnoGame:
         self.used.append(first_card)
         self.last_played = first_card
         self.current_color = first_card["color"]
-
         self.next_player()
-        self.apply_effect()
+        self.log_setup({
+            "players": {
+                player.name: player.hand.copy()
+                for player in self.players
+            },
+            "starting_card": self.last_played,
+            "starting_player": self.current_player.name
+})
         self.log(f"Starting card : {self.last_played['value']} | {self.last_played['color']}")
         self.log(f"First Player: {self.current_player.name}")
-
+        
 
 
     def ask_card(self):
@@ -286,8 +297,20 @@ class UnoGame:
         return self.winner
 
 
+    def log_setup(self, setup_data):
+        self.replay_logs["setup"].update(setup_data)
+
+
+    def log_turns(self, turn_data):
+            self.replay_logs["turns"].append(turn_data)
+    
+
+    def log_result(self, result_data):
+            self.replay_logs["result"] = result_data
+
     def log(self, message):
         self.logs.append(message)
+            
 
     def get_observation(self):
         return self.current_player.hand
