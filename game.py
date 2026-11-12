@@ -35,7 +35,7 @@ class UnoGame:
                 self.deck.append({
                     "color": row["color"],
                     "value": row["value"],
-                    "effect": row["effect"]
+                    "effect": None if pd.isna(row["effect"]) else row["effect"]
                 })
 
 
@@ -110,9 +110,19 @@ class UnoGame:
 
     def play_turn(self, choice=None):
         self.turn_count += 1
+        self.log_turns({
+            "turn": self.turn_count,
+            "player": self.current_player.name,
+            "events": []
+        })
 
         if choice is None or choice == 0:
             drawn_card = self.draw_card()
+            self.log_event({
+                            "type": "DRAW",
+                            "player": self.current_player.name,
+                            "cards": [drawn_card]
+                            })
 
             if drawn_card in self.legal_cards():
                 return "DRAWN_PLAYABLE"
@@ -151,23 +161,75 @@ class UnoGame:
 
         elif effect == "Reverse":
             self.normal_order = not self.normal_order
+            self.log_event({"type": "DIRECTION_CHANGE",
+                            "direction": "clockwise" if self.normal_order else "counter_clockwise"})
 
         elif effect == "Draw Two":
             self.next_player()
-            self.draw_card()
-            self.draw_card()
+            drawn_card = [self.draw_card() for _ in range(2)]
+            self.log_event({
+                        "type": "DRAW",
+                        "player": self.current_player.name,
+                        "cards": drawn_card
+                        })
+            
 
         elif effect == "Draw Four":
             new_color = self.ask_color()
             self.current_color = COLORS[new_color - 1]
+            self.log_event({
+                            "type": "COLOR_CHANGE",
+                            "player": self.current_player.name,
+                            "new_color": self.current_color
+                            })
             self.next_player()
-
-            for _ in range(4):
-                self.draw_card()
+            
+            drawn_card = [self.draw_card() for _ in range(4)]
+            self.log_event({
+                                "type": "DRAW",
+                                "player": self.current_player.name,
+                                "cards": drawn_card
+                                })
 
         elif effect == "Wild":
             new_color = self.ask_color()
             self.current_color = COLORS[new_color - 1]
+            self.log_event({
+                            "type": "COLOR_CHANGE",
+                            "player": self.current_player.name,
+                            "new_color": self.current_color
+                            })
+            
+
+    def apply_starting_effect(self):
+        effect = self.last_played["effect"]
+        events = self.replay_logs["setup"]["events"]
+
+        if effect == "Skip":
+            skipped = self.current_player.name
+            self.next_player()
+            events.append({"type": "SKIP",
+                           "player": skipped})
+
+        elif effect == "Reverse":
+            self.normal_order = not self.normal_order
+            self.next_player()
+            events.append({"type": "DIRECTION_CHANGE",
+                           "direction": "clockwise" if self.normal_order else "counter_clockwise"})
+
+        elif effect == "Draw Two":
+            penalized = self.current_player.name
+            drawn_card = [self.draw_card() for _ in range(2)]
+            events.append({"type": "DRAW",
+                           "player": penalized,
+                           "cards": drawn_card})
+            self.next_player()
+
+        elif effect == "Wild":
+            color_choice = self.ask_color()
+            self.current_color = COLORS[color_choice -1]
+            events.append({"type": "COLOR_CHANGE",
+                           "color": self.current_color})
             
 
 
@@ -187,6 +249,11 @@ class UnoGame:
 
         self.used.append(played_card)
         self.last_played = played_card
+        self.log_event({
+                                    "type": "PLAY",
+                                    "player": self.current_player.name,
+                                    "card": played_card.copy()
+                                    })
         #self.log(f"{self.current_player.name} , played | {played_card['value']} {played_card['color']}")
         self.current_color = played_card["color"]
 
@@ -196,25 +263,51 @@ class UnoGame:
 
 
     def setup_round(self):
+        self.current_player = None
+        self.normal_order = True
+        self.running = True
+        self.winner = None
+        self.turn_count = 0
+
+        self.used = []
+        self.logs = []
+
+        self.replay_logs = {
+            "setup": {},
+            "turns": [],
+            "result": {}
+        }
         self.reset_hand()
         self.create_deck()
         self.shuffle_deck()
         self.deal_cards()
 
         first_card = self.deck.pop()
-
+        while first_card["effect"] == "Draw Four":
+            self.deck.insert(0, first_card)
+            self.shuffle_deck()
+            first_card = self.deck.pop()
         self.used.append(first_card)
         self.last_played = first_card
         self.current_color = first_card["color"]
         self.next_player()
         self.log_setup({
-            "players": {
-                player.name: player.hand.copy()
-                for player in self.players
-            },
-            "starting_card": self.last_played,
-            "starting_player": self.current_player.name
-})
+                        "players": {
+                            player.name: [
+                                card.copy() for card in player.hand
+                            ]
+                            for player in self.players
+                        },
+                        "starting_card": first_card.copy(),
+                        "starting_player": self.current_player.name,
+                        "direction": "clockwise" if self.normal_order else "counter_clockwise",
+                        "events": []
+                    })
+        self.apply_starting_effect()
+        self.log_setup({
+                        "active_player_after_setup": self.current_player.name,
+                        "active_color_after_setup": self.current_color
+                    })
         self.log(f"Starting card : {self.last_played['value']} | {self.last_played['color']}")
         self.log(f"First Player: {self.current_player.name}")
         
@@ -282,6 +375,11 @@ class UnoGame:
 
                 # 0 = pass
                 if drawn_choice == 0:
+                    self.log_event({
+                                    "type": "PASS",
+                                    "player": self.current_player.name
+                                    })
+                    
                     self.next_player()
 
                 # 1 = play the card just drawn
@@ -317,3 +415,6 @@ class UnoGame:
 
     def get_legal_actions(self):
         return self.legal_cards()
+
+    def log_event(self, event_data):
+        self.replay_logs["turns"][-1]["events"].append(event_data)

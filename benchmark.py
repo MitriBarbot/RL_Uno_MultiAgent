@@ -7,9 +7,10 @@ from collections import Counter
 import time
 import matplotlib.pyplot as plt
 import pandas as pd
+import json
 
 
-def run_benchmark(amount=10_000):
+def run_benchmark(amount=1):
 
     players = [
         Player("P1 Heuristic", HeuristicAgent("Heuristic 1")),
@@ -64,8 +65,13 @@ def run_benchmark(amount=10_000):
 
     plt.show()
     replay_logs = game.replay_logs
-    print(replay_logs)
-
+    #print(replay_logs)
+    with open('replay.json', 'w', encoding='utf-8') as f:
+        json.dump(replay_logs, f, ensure_ascii=False, indent=4)
+    for turn in game.replay_logs["turns"]:
+        for event in turn["events"]:
+            if "player" in event:
+                print(event["type"], event["player"], type(event["player"]))
 
 if __name__ == "__main__":
     run_benchmark()

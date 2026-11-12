@@ -1,0 +1,941 @@
+{
+    "setup": {
+        "players": {
+            "P1 Heuristic": [
+                {
+                    "color": "Yellow",
+                    "value": "9",
+                    "effect": null
+                },
+                {
+                    "color": "Blue",
+                    "value": "8",
+                    "effect": null
+                },
+                {
+                    "color": "Green",
+                    "value": "2",
+                    "effect": null
+                },
+                {
+                    "color": "Yellow",
+                    "value": "5",
+                    "effect": null
+                },
+                {
+                    "color": "Green",
+                    "value": "9",
+                    "effect": null
+                },
+                {
+                    "color": "Blue",
+                    "value": "5",
+                    "effect": null
+                },
+                {
+                    "color": "Black",
+                    "value": "Wild",
+                    "effect": "Wild"
+                }
+            ],
+            "P2 Random": [
+                {
+                    "color": "Green",
+                    "value": "Reverse",
+                    "effect": "Reverse"
+                },
+                {
+                    "color": "Yellow",
+                    "value": "3",
+                    "effect": null
+                },
+                {
+                    "color": "Blue",
+                    "value": "Draw Two",
+                    "effect": "Draw Two"
+                },
+                {
+                    "color": "Red",
+                    "value": "Skip",
+                    "effect": "Skip"
+                },
+                {
+                    "color": "Red",
+                    "value": "9",
+                    "effect": null
+                },
+                {
+                    "color": "Black",
+                    "value": "Wild Draw Four",
+                    "effect": "Draw Four"
+                },
+                {
+                    "color": "Yellow",
+                    "value": "0",
+                    "effect": null
+                }
+            ],
+            "P3 Heuristic": [
+                {
+                    "color": "Blue",
+                    "value": "7",
+                    "effect": null
+                },
+                {
+                    "color": "Black",
+                    "value": "Wild",
+                    "effect": "Wild"
+                },
+                {
+                    "color": "Red",
+                    "value": "9",
+                    "effect": null
+                },
+                {
+                    "color": "Red",
+                    "value": "Draw Two",
+                    "effect": "Draw Two"
+                },
+                {
+                    "color": "Blue",
+                    "value": "6",
+                    "effect": null
+                },
+                {
+                    "color": "Blue",
+                    "value": "8",
+                    "effect": null
+                },
+                {
+                    "color": "Red",
+                    "value": "Skip",
+                    "effect": "Skip"
+                }
+            ],
+            "P4 Random": [
+                {
+                    "color": "Yellow",
+                    "value": "6",
+                    "effect": null
+                },
+                {
+                    "color": "Blue",
+                    "value": "1",
+                    "effect": null
+                },
+                {
+                    "color": "Red",
+                    "value": "6",
+                    "effect": null
+                },
+                {
+                    "color": "Blue",
+                    "value": "Reverse",
+                    "effect": "Reverse"
+                },
+                {
+                    "color": "Red",
+                    "value": "Draw Two",
+                    "effect": "Draw Two"
+                },
+                {
+                    "color": "Blue",
+                    "value": "2",
+                    "effect": null
+                },
+                {
+                    "color": "Green",
+                    "value": "1",
+                    "effect": null
+                }
+            ]
+        },
+        "starting_card": {
+            "color": "Green",
+            "value": "3",
+            "effect": null
+        },
+        "starting_player": "P3 Heuristic",
+        "direction": "clockwise",
+        "events": [],
+        "active_player_after_setup": "P3 Heuristic",
+        "active_color_after_setup": "Green"
+    },
+    "turns": [
+        {
+            "turn": 1,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Black",
+                        "value": "Wild",
+                        "effect": "Wild"
+                    }
+                },
+                {
+                    "type": "COLOR_CHANGE",
+                    "player": "P3 Heuristic",
+                    "new_color": "Blue"
+                }
+            ]
+        },
+        {
+            "turn": 2,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Blue",
+                        "value": "Reverse",
+                        "effect": "Reverse"
+                    }
+                },
+                {
+                    "type": "DIRECTION_CHANGE",
+                    "direction": "counter_clockwise"
+                }
+            ]
+        },
+        {
+            "turn": 3,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Blue",
+                        "value": "8",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 4,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Blue",
+                        "value": "Draw Two",
+                        "effect": "Draw Two"
+                    }
+                },
+                {
+                    "type": "DRAW",
+                    "player": "P1 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Black",
+                            "value": "Wild",
+                            "effect": "Wild"
+                        },
+                        {
+                            "color": "Green",
+                            "value": "4",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 5,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Blue",
+                        "value": "1",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 6,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Blue",
+                        "value": "7",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 7,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Black",
+                        "value": "Wild Draw Four",
+                        "effect": "Draw Four"
+                    }
+                },
+                {
+                    "type": "COLOR_CHANGE",
+                    "player": "P2 Random",
+                    "new_color": "Green"
+                },
+                {
+                    "type": "DRAW",
+                    "player": "P1 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Blue",
+                            "value": "4",
+                            "effect": null
+                        },
+                        {
+                            "color": "Blue",
+                            "value": "6",
+                            "effect": null
+                        },
+                        {
+                            "color": "Yellow",
+                            "value": "Draw Two",
+                            "effect": "Draw Two"
+                        },
+                        {
+                            "color": "Blue",
+                            "value": "Skip",
+                            "effect": "Skip"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 8,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Green",
+                        "value": "1",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 9,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P3 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Red",
+                            "value": "1",
+                            "effect": null
+                        }
+                    ]
+                },
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Red",
+                        "value": "1",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 10,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Red",
+                        "value": "9",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 11,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Green",
+                        "value": "9",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 12,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P4 Random",
+                    "cards": [
+                        {
+                            "color": "Yellow",
+                            "value": "9",
+                            "effect": null
+                        }
+                    ]
+                },
+                {
+                    "type": "PASS",
+                    "player": "P4 Random"
+                }
+            ]
+        },
+        {
+            "turn": 13,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Red",
+                        "value": "9",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 14,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Red",
+                        "value": "Skip",
+                        "effect": "Skip"
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 15,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Red",
+                        "value": "Draw Two",
+                        "effect": "Draw Two"
+                    }
+                },
+                {
+                    "type": "DRAW",
+                    "player": "P3 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Blue",
+                            "value": "9",
+                            "effect": null
+                        },
+                        {
+                            "color": "Yellow",
+                            "value": "Draw Two",
+                            "effect": "Draw Two"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 16,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P2 Random",
+                    "cards": [
+                        {
+                            "color": "Green",
+                            "value": "6",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 17,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "Draw Two",
+                        "effect": "Draw Two"
+                    }
+                },
+                {
+                    "type": "DRAW",
+                    "player": "P4 Random",
+                    "cards": [
+                        {
+                            "color": "Black",
+                            "value": "Wild Draw Four",
+                            "effect": "Draw Four"
+                        },
+                        {
+                            "color": "Yellow",
+                            "value": "Reverse",
+                            "effect": "Reverse"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 18,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "Draw Two",
+                        "effect": "Draw Two"
+                    }
+                },
+                {
+                    "type": "DRAW",
+                    "player": "P2 Random",
+                    "cards": [
+                        {
+                            "color": "Green",
+                            "value": "Skip",
+                            "effect": "Skip"
+                        },
+                        {
+                            "color": "Yellow",
+                            "value": "2",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 19,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "5",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 20,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "Reverse",
+                        "effect": "Reverse"
+                    }
+                },
+                {
+                    "type": "DIRECTION_CHANGE",
+                    "direction": "clockwise"
+                }
+            ]
+        },
+        {
+            "turn": 21,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "9",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 22,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "2",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 23,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P3 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Yellow",
+                            "value": "1",
+                            "effect": null
+                        }
+                    ]
+                },
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "1",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 24,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "9",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 25,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Black",
+                        "value": "Wild",
+                        "effect": "Wild"
+                    }
+                },
+                {
+                    "type": "COLOR_CHANGE",
+                    "player": "P1 Heuristic",
+                    "new_color": "Blue"
+                }
+            ]
+        },
+        {
+            "turn": 26,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P2 Random",
+                    "cards": [
+                        {
+                            "color": "Green",
+                            "value": "6",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 27,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Blue",
+                        "value": "9",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 28,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Blue",
+                        "value": "2",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 29,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Blue",
+                        "value": "8",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 30,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P2 Random",
+                    "cards": [
+                        {
+                            "color": "Yellow",
+                            "value": "8",
+                            "effect": null
+                        }
+                    ]
+                },
+                {
+                    "type": "PASS",
+                    "player": "P2 Random"
+                }
+            ]
+        },
+        {
+            "turn": 31,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P3 Heuristic",
+                    "card": {
+                        "color": "Blue",
+                        "value": "6",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 32,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Red",
+                        "value": "6",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 33,
+            "player": "P1 Heuristic",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P1 Heuristic",
+                    "card": {
+                        "color": "Blue",
+                        "value": "6",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 34,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Green",
+                        "value": "6",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 35,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P3 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Red",
+                            "value": "4",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 36,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Black",
+                        "value": "Wild Draw Four",
+                        "effect": "Draw Four"
+                    }
+                },
+                {
+                    "type": "COLOR_CHANGE",
+                    "player": "P4 Random",
+                    "new_color": "Yellow"
+                },
+                {
+                    "type": "DRAW",
+                    "player": "P1 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Red",
+                            "value": "6",
+                            "effect": null
+                        },
+                        {
+                            "color": "Red",
+                            "value": "8",
+                            "effect": null
+                        },
+                        {
+                            "color": "Yellow",
+                            "value": "5",
+                            "effect": null
+                        },
+                        {
+                            "color": "Blue",
+                            "value": "3",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 37,
+            "player": "P2 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P2 Random",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "0",
+                        "effect": null
+                    }
+                }
+            ]
+        },
+        {
+            "turn": 38,
+            "player": "P3 Heuristic",
+            "events": [
+                {
+                    "type": "DRAW",
+                    "player": "P3 Heuristic",
+                    "cards": [
+                        {
+                            "color": "Red",
+                            "value": "1",
+                            "effect": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "turn": 39,
+            "player": "P4 Random",
+            "events": [
+                {
+                    "type": "PLAY",
+                    "player": "P4 Random",
+                    "card": {
+                        "color": "Yellow",
+                        "value": "6",
+                        "effect": null
+                    }
+                }
+            ]
+        }
+    ],
+    "result": {
+        "Winner": "P4 Random",
+        "Turns_count": 39
+    }
+}
