@@ -10,7 +10,7 @@ import pandas as pd
 import json
 
 
-def run_benchmark(amount=1):
+def run_benchmark(amount=10000):
 
     players = [
         Player("P1 Heuristic", HeuristicAgent("Heuristic 1")),
@@ -24,9 +24,12 @@ def run_benchmark(amount=1):
 
     start_time = time.time()
 
-    for _ in range(amount):
+    for i in range(amount):
         game = UnoGame(players)
-
+        if i+1 == amount:
+            game.replay_mode = True
+        else:
+            game.replay_mode = False
         winner = game.run()
 
         winners.append(winner)
@@ -68,10 +71,6 @@ def run_benchmark(amount=1):
     #print(replay_logs)
     with open('replay.json', 'w', encoding='utf-8') as f:
         json.dump(replay_logs, f, ensure_ascii=False, indent=4)
-    for turn in game.replay_logs["turns"]:
-        for event in turn["events"]:
-            if "player" in event:
-                print(event["type"], event["player"], type(event["player"]))
 
 if __name__ == "__main__":
     run_benchmark()

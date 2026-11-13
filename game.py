@@ -13,6 +13,7 @@ class UnoGame:
         self.players = players
         self.deck = []
         self.used = []
+        self.replay_mode = False
         self.current_player = None
         self.last_played = None
         self.normal_order = True
@@ -118,11 +119,12 @@ class UnoGame:
 
         if choice is None or choice == 0:
             drawn_card = self.draw_card()
-            self.log_event({
-                            "type": "DRAW",
-                            "player": self.current_player.name,
-                            "cards": [drawn_card]
-                            })
+            if self.replay_mode:
+                self.log_event({
+                                "type": "DRAW",
+                                "player": self.current_player.name,
+                                "cards": [drawn_card]
+                                })
 
             if drawn_card in self.legal_cards():
                 return "DRAWN_PLAYABLE"
@@ -161,13 +163,15 @@ class UnoGame:
 
         elif effect == "Reverse":
             self.normal_order = not self.normal_order
-            self.log_event({"type": "DIRECTION_CHANGE",
+            if self.replay_mode:
+                self.log_event({"type": "DIRECTION_CHANGE",
                             "direction": "clockwise" if self.normal_order else "counter_clockwise"})
 
         elif effect == "Draw Two":
             self.next_player()
             drawn_card = [self.draw_card() for _ in range(2)]
-            self.log_event({
+            if self.replay_mode:
+                self.log_event({
                         "type": "DRAW",
                         "player": self.current_player.name,
                         "cards": drawn_card
@@ -177,7 +181,8 @@ class UnoGame:
         elif effect == "Draw Four":
             new_color = self.ask_color()
             self.current_color = COLORS[new_color - 1]
-            self.log_event({
+            if self.replay_mode:
+                self.log_event({
                             "type": "COLOR_CHANGE",
                             "player": self.current_player.name,
                             "new_color": self.current_color
@@ -185,7 +190,8 @@ class UnoGame:
             self.next_player()
             
             drawn_card = [self.draw_card() for _ in range(4)]
-            self.log_event({
+            if self.replay_mode:
+                self.log_event({
                                 "type": "DRAW",
                                 "player": self.current_player.name,
                                 "cards": drawn_card
@@ -194,7 +200,8 @@ class UnoGame:
         elif effect == "Wild":
             new_color = self.ask_color()
             self.current_color = COLORS[new_color - 1]
-            self.log_event({
+            if self.replay_mode:
+                self.log_event({
                             "type": "COLOR_CHANGE",
                             "player": self.current_player.name,
                             "new_color": self.current_color
@@ -249,7 +256,8 @@ class UnoGame:
 
         self.used.append(played_card)
         self.last_played = played_card
-        self.log_event({
+        if self.replay_mode:
+            self.log_event({
                                     "type": "PLAY",
                                     "player": self.current_player.name,
                                     "card": played_card.copy()
@@ -268,6 +276,7 @@ class UnoGame:
         self.running = True
         self.winner = None
         self.turn_count = 0
+        self.replay_mode = False
 
         self.used = []
         self.logs = []
@@ -375,7 +384,8 @@ class UnoGame:
 
                 # 0 = pass
                 if drawn_choice == 0:
-                    self.log_event({
+                    if self.replay_mode:
+                        self.log_event({
                                     "type": "PASS",
                                     "player": self.current_player.name
                                     })
